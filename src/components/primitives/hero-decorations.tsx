@@ -28,10 +28,11 @@ export function SparkBurst({ className }: { className?: string }) {
         {rays.map((r, i) => {
           const rad = (r.angle * Math.PI) / 180;
           const innerR = 10;
-          const x1 = center.x + Math.cos(rad) * innerR;
-          const y1 = center.y - Math.sin(rad) * innerR;
-          const x2 = center.x + Math.cos(rad) * (innerR + r.len);
-          const y2 = center.y - Math.sin(rad) * (innerR + r.len);
+          const q = (n: number) => Math.round(n * 1000) / 1000;
+          const x1 = q(center.x + Math.cos(rad) * innerR);
+          const y1 = q(center.y - Math.sin(rad) * innerR);
+          const x2 = q(center.x + Math.cos(rad) * (innerR + r.len));
+          const y2 = q(center.y - Math.sin(rad) * (innerR + r.len));
           return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} />;
         })}
       </g>

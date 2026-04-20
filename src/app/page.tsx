@@ -1,5 +1,7 @@
 import { Hero } from "@/components/sections/hero";
 import { Navbar } from "@/components/sections/navbar";
+import { Services } from "@/components/sections/services";
+import { VideosCarousel } from "@/components/sections/videos-carousel";
 
 export default function Home() {
   return (
@@ -7,6 +9,8 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <VideosCarousel />
+        <Services />
       </main>
     </>
   );
