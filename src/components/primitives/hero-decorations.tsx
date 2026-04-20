@@ -1,6 +1,5 @@
 "use client";
 
-import { useMotionValue, useSpring } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
@@ -90,10 +89,6 @@ const DOTS: Dot[] = [
 
 export function ParallaxDots({ className }: { className?: string }) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 60, damping: 22, mass: 0.6 });
-  const sy = useSpring(my, { stiffness: 60, damping: 22, mass: 0.6 });
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -101,27 +96,45 @@ export function ParallaxDots({ className }: { className?: string }) {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (coarse || reduced) return;
 
+    let targetX = 0;
+    let targetY = 0;
+    let currX = 0;
+    let currY = 0;
+    let rafId = 0;
+    let active = false;
+
+    const tick = () => {
+      currX += (targetX - currX) * 0.08;
+      currY += (targetY - currY) * 0.08;
+      const el = rootRef.current;
+      if (el) {
+        el.style.setProperty("--mx", currX.toFixed(3));
+        el.style.setProperty("--my", currY.toFixed(3));
+      }
+      if (Math.abs(targetX - currX) > 0.001 || Math.abs(targetY - currY) > 0.001) {
+        rafId = requestAnimationFrame(tick);
+      } else {
+        active = false;
+      }
+    };
+
     const onMove = (e: MouseEvent) => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      mx.set((e.clientX / vw - 0.5) * 2);
-      my.set((e.clientY / vh - 0.5) * 2);
+      targetX = (e.clientX / vw - 0.5) * 2;
+      targetY = (e.clientY / vh - 0.5) * 2;
+      if (!active) {
+        active = true;
+        rafId = requestAnimationFrame(tick);
+      }
     };
-
-    const unsubX = sx.on("change", (v) => {
-      rootRef.current?.style.setProperty("--mx", String(v));
-    });
-    const unsubY = sy.on("change", (v) => {
-      rootRef.current?.style.setProperty("--my", String(v));
-    });
 
     window.addEventListener("mousemove", onMove, { passive: true });
     return () => {
       window.removeEventListener("mousemove", onMove);
-      unsubX();
-      unsubY();
+      cancelAnimationFrame(rafId);
     };
-  }, [mx, my, sx, sy]);
+  }, []);
 
   return (
     <div
@@ -130,7 +143,6 @@ export function ParallaxDots({ className }: { className?: string }) {
       aria-hidden
       style={
         {
-          // Defaults in case JS hasn't run yet / SSR
           "--mx": "0",
           "--my": "0",
         } as React.CSSProperties

@@ -1,15 +1,19 @@
+import Image from "next/image";
 import { Marquee } from "@/components/primitives/marquee";
 import { VIDEO_ROW_1, VIDEO_ROW_2, type VideoThumb } from "@/content/videos";
 
-function Thumb({ src, alt }: VideoThumb) {
+type ThumbProps = VideoThumb & { eager?: boolean };
+
+function Thumb({ src, alt, eager }: ThumbProps) {
   return (
     <div className="relative h-[180px] w-[320px] overflow-hidden rounded-2xl sm:h-[196px] sm:w-[348px]">
-      <img
+      <Image
         src={src}
         alt={alt}
-        loading="lazy"
-        decoding="async"
-        className="block h-full w-full object-cover"
+        fill
+        sizes="(max-width: 809px) 320px, 348px"
+        loading={eager ? "eager" : "lazy"}
+        className="object-cover"
       />
     </div>
   );
@@ -23,13 +27,13 @@ export function VideosCarousel() {
           items={VIDEO_ROW_1}
           direction="left"
           duration={55}
-          renderItem={(item) => <Thumb {...item} />}
+          renderItem={(item, i) => <Thumb {...item} eager={i < 2} />}
         />
         <Marquee
           items={VIDEO_ROW_2}
           direction="right"
           duration={55}
-          renderItem={(item) => <Thumb {...item} />}
+          renderItem={(item, i) => <Thumb {...item} eager={i < 2} />}
         />
       </div>
     </section>

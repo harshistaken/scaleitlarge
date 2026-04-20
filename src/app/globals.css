@@ -104,6 +104,61 @@
   }
 }
 
+@keyframes hero-block-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes hero-decor-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes spark-wiggle {
+  0%, 100% { transform: rotate(-10deg); }
+  50% { transform: rotate(10deg); }
+}
+
+@layer utilities {
+  .hero-word {
+    display: inline-block;
+    animation: hero-word-in 0.55s var(--ease-out-quart) both;
+    animation-delay: calc(0.1s + var(--i, 0) * 0.06s);
+  }
+  .hero-block {
+    animation: hero-block-in 0.5s var(--ease-out-quart) both;
+    animation-delay: calc(0.1s + var(--i, 0) * 0.06s);
+  }
+  .hero-decor-in {
+    animation: hero-decor-in 0.55s var(--ease-out-quart) both;
+  }
+  .spark-wiggle {
+    animation: hero-decor-in 0.55s var(--ease-out-quart) both,
+      spark-wiggle 2.4s ease-in-out 1.5s infinite;
+    transform-origin: 50% 70%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-word,
+    .hero-block,
+    .hero-decor-in,
+    .spark-wiggle {
+      animation: none;
+    }
+  }
+}
+
 @keyframes shimmer-text {
   0% {
     background-position: 200% 0;

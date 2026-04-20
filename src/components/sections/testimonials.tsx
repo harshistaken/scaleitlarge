@@ -5,15 +5,9 @@ import Image from "next/image";
 
 function TestimonialCard({ name, quote, avatarSrc, avatarAlt }: Testimonial) {
   return (
-    <article className="relative h-[140px] w-[220px] overflow-hidden rounded-[6px] sm:h-[153px] sm:w-[240px]">
-      <Image
-        src="/assets/testimonials/card-bg.png"
-        alt=""
-        fill
-        sizes="(max-width: 809px) 220px, 240px"
-        className="object-cover"
-      />
-
+    <article
+      className="relative h-[140px] w-[220px] overflow-hidden rounded-[6px] bg-[url('/assets/testimonials/card-bg.png')] bg-cover bg-center sm:h-[153px] sm:w-[240px]"
+    >
       <div className="relative z-10 p-[8px] text-black">
         <div className="flex items-center gap-2">
           <div className="relative h-[20px] w-[20px] overflow-hidden rounded-[4px]">

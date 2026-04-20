@@ -3,9 +3,10 @@ import localFont from "next/font/local";
 
 export const unbounded = Unbounded({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "600"],
   variable: "--font-unbounded",
   display: "swap",
+  preload: true,
 });
 
 export const patrickHand = Patrick_Hand({

@@ -41,6 +41,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={fontVariables}>
+      <head>
+        <link
+          rel="preconnect"
+          href="https://framerusercontent.com"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

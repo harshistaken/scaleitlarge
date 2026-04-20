@@ -26,6 +26,7 @@ export function Services() {
                     width={590}
                     height={400}
                     loading="lazy"
+                    sizes="(max-width: 809px) 335px, (max-width: 1199px) 295px, 295px"
                     className="block h-auto w-full"
                   />
                 </div>

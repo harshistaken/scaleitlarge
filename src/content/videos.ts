@@ -1,7 +1,7 @@
 export type VideoThumb = { src: string; alt: string };
 
 const F = (hash: string, ext: "jpg" | "png" = "jpg") =>
-  `https://framerusercontent.com/images/${hash}.${ext}?width=1920&height=1080`;
+  `https://framerusercontent.com/images/${hash}.${ext}`;
 
 export const VIDEO_ROW_1: VideoThumb[] = [
   { src: F("fXZfLsmvxlnvq0SaocydcFnlgo"), alt: "Thumbnail — dieuwkegorter" },

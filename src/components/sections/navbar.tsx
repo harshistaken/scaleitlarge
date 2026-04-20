@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useId, useState } from "react";
 import { Logo } from "@/components/primitives/logo";
 import { SpotsPill } from "@/components/primitives/spots-pill";
@@ -16,7 +15,6 @@ const LINKS = [
 
 export function Navbar() {
     const [open, setOpen] = useState(false);
-    const reduceMotion = useReducedMotion();
     const menuId = useId();
 
     useEffect(() => {
@@ -70,36 +68,30 @@ export function Navbar() {
                     </button>
                 </div>
 
-                <AnimatePresence initial={false}>
-                    {open && (
-                        <motion.div
-                            key="panel"
-                            id={menuId}
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={
-                                reduceMotion
-                                    ? { duration: 0 }
-                                    : {
-                                          height: { duration: 0.35, ease: [0.25, 1, 0.5, 1] },
-                                          opacity: { duration: 0.2 },
-                                      }
-                            }
-                            className="sm:hidden"
-                        >
-                            <ul className="flex flex-col px-5 pb-5 pt-1">
-                                {LINKS.map((l) => (
-                                    <li key={l.href}>
-                                        <a href={l.href} onClick={() => setOpen(false)} className="block py-3 font-body text-[18px] font-normal leading-tight text-text">
-                                            {l.label}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </motion.div>
+                <div
+                    id={menuId}
+                    className={cn(
+                        "grid overflow-hidden transition-[grid-template-rows,opacity] duration-[320ms] ease-[cubic-bezier(0.25,1,0.5,1)] sm:hidden",
+                        open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
                     )}
-                </AnimatePresence>
+                >
+                    <div className="min-h-0">
+                        <ul className="flex flex-col px-5 pb-5 pt-1">
+                            {LINKS.map((l) => (
+                                <li key={l.href}>
+                                    <a
+                                        href={l.href}
+                                        onClick={() => setOpen(false)}
+                                        tabIndex={open ? 0 : -1}
+                                        className="block py-3 font-body text-[18px] font-normal leading-tight text-text"
+                                    >
+                                        {l.label}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
             </nav>
         </header>
     );
